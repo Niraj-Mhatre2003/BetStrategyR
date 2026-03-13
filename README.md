@@ -4,22 +4,30 @@ R Package for betting strategies
 YourPackage/
 
 R/
-    optimal_bet.R
-    value_bet.R
-    bookmaker_margin.R
 
-    simulate_survival.R
+# --- utilities ---
+optimal_bet.R
+value_bet.R
+bookmaker_margin.R
 
-    train_probability_model.R
-    predict_probability.R
+# --- probability modelling ---
+train_probability_model.R
+predict_probability.R
 
-    cluster_betting_markets.R
+# --- simulation engine ---
+simulate_survival.R
 
-    compute_player_strength.R
-    team_strength.R
+# --- market analysis ---
+cluster_betting_markets.R
 
-    detect_strategy_breakpoint.R
-    stress_test_strategy.R
+# --- player analysis ---
+compute_player_strength.R
+team_strength.R
 
-    plot_survival.R
-    compare_strategies.R
+# --- advanced analytics ---
+detect_strategy_breakpoint.R
+stress_test_strategy.R
+
+# --- visualization ---
+plot_survival.R
+compare_strategies.R
