@@ -1,65 +1,57 @@
-# BetSimR: High-Dimensional Statistical Inference & Cricket Strategy Simulator
+# BetSimR: High-Dimensional Cricket Strategy & Simulation Suite
 
 **Author:** Niraj Mhatre  
-**Institution:** Indian Institute of Technology Kanpur (IITK)  
-**Course:** MTH210 Statistical Computing  
-**Project Deadline:** April 4, 2026  
 
 ---
 
 ## 🏏 Project Overview
-[cite_start]**BetSimR** is an R package designed to assist users in analyzing and optimizing betting strategies using advanced statistical simulation techniques[cite: 121]. [cite_start]Unlike standard predictors, this package functions as a **Quantitative Decision Support System**[cite: 123]. [cite_start]It allows users to input match data or betting odds, simulate match outcomes using Monte Carlo methods, and evaluate the effectiveness of various betting strategies through high-dimensional visualization and rigorous statistical metrics[cite: 122, 123].
+**BetSimR** is an R package designed for the analysis and optimization of betting strategies using advanced statistical simulation. [cite_start]Functioning as a **Quantitative Decision Support System**, it allows users to input match data or live betting odds, simulate match outcomes using Monte Carlo methods, and evaluate the effectiveness of various betting strategies through high-dimensional visualization and rigorous economic metrics[cite: 121, 122].
 
-[cite_start]The core architecture combines probability theory, **Monte Carlo simulation**, and optimization techniques like the **Kelly Criterion** to provide actionable insights into betting scenarios[cite: 123].
-
----
-
-## 🛠 Statistical Framework & Constraints (MTH210)
-To meet the academic requirements of MTH210, the package integrates the following central statistical concepts:
-
-* [cite_start]**Dimensionality Reduction (PCA):** Applied to team and player performance features to reduce multicollinearity and identify latent drivers of match outcomes[cite: 68, 69].
-* **Manifold Learning & Clustering:** Uses **UMAP/t-SNE** for match similarity mapping and **k-means/EM Algorithm** for identifying latent team "form" states.
-* **Non-Parametric Prediction (kNN):** Predicts match outcomes by identifying the "k" most similar historical matches within the reduced PCA/UMAP space.
-* [cite_start]**Simulation & CLT:** Match outcomes are simulated using **Bernoulli trials**[cite: 156]. [cite_start]By running 10,000+ iterations, the package demonstrates the **Central Limit Theorem (CLT)**, showing the convergence of the empirical distribution of outcomes[cite: 156].
-* **Optimization (Gradient Descent):** A custom implementation to optimize the loss function for team-strength weighting.
-* **Inference Quality:** Diagnostics for **Unbiasedness** and **Consistency** to ensure model-derived probabilities are statistically sound.
+[cite_start]The architecture combines probability theory, manifold learning, and capital allocation techniques like the **Kelly Criterion** to provide actionable insights for decision-making under uncertainty[cite: 123].
 
 ---
 
-## 🚀 Package Workflow
-[cite_start]The package follows a structured pipeline designed for both academic rigor and practical utility[cite: 132]:
+## 🛠 Technical Architecture
+The package leverages a sophisticated statistical pipeline to ensure robust predictions and risk management:
 
-1.  [cite_start]**Input Data/Odds:** Users provide match metrics or bookmaker odds[cite: 133].
-2.  [cite_start]**Market Analysis:** Conversion of decimal odds into implied probabilities[cite: 134, 153].
-3.  [cite_start]**Simulation Engine:** Generates an empirical distribution of match outcomes through repeated Monte Carlo runs[cite: 135, 156].
-4.  [cite_start]**Strategy Selection:** Users choose between **Flat Betting**, **Martingale**, or **Kelly Criterion**[cite: 137, 158].
-5.  [cite_start]**Bankroll Evolution:** Iterative updates to the user's bankroll to estimate expected returns and **Risk of Ruin**[cite: 138, 168].
-6.  [cite_start]**Visualization:** High-fidelity plots of bankroll growth and risk distribution histograms[cite: 139, 184].
-7.  [cite_start]**Recommendation:** Suggests the optimal bet size ($f^*$) based on the calculated edge[cite: 140, 182].
+* [cite_start]**Manifold Learning (PCA & UMAP):** Applied to performance features to reduce dimensionality, mitigate multicollinearity, and identify the latent drivers of match outcomes[cite: 68, 69].
+* **Non-Parametric Prediction (kNN):** Identifies the "k" most similar historical match profiles within the reduced feature space to anchor simulations.
+* [cite_start]**Monte Carlo Engine:** Match outcomes are generated via thousands of Bernoulli trials[cite: 156]. [cite_start]This empirical distribution allows for the observation of the **Central Limit Theorem (CLT)** in real-time as the mean predicted score converges[cite: 105].
+* **Iterative Optimization:** Implements custom Gradient Descent logic to optimize team-strength weighting and minimize prediction error.
+* [cite_start]**Market Intelligence:** Uses **Shin’s Method** to strip bookmaker overrounds, converting public odds into "Fair" implied probabilities[cite: 74].
 
 ---
 
-## 📦 Key Functions
-* [cite_start]`input_odds()`: Accepts user-defined market odds[cite: 176].
-* [cite_start]`convert_prob()`: Strips bookmaker margins (overround) to find fair probabilities[cite: 176].
-* [cite_start]`simulate_match()`: Executes the Monte Carlo engine for match outcomes[cite: 177].
-* [cite_start]`apply_strategy()`: Computes stakes based on selected risk profiles[cite: 179].
-* [cite_start]`simulate_bankroll()`: Tracks the longitudinal evolution of capital[cite: 180].
-* [cite_start]`kelly_bet()`: Calculates the optimal fraction of bankroll to wager[cite: 182].
+## 🚀 Workflow
+1.  [cite_start]**Market Ingestion:** Input decimal or fractional odds to establish the market baseline[cite: 133].
+2.  [cite_start]**Outcome Simulation:** Generate a distribution of match results based on historical similarity and Monte Carlo iterations[cite: 135].
+3.  [cite_start]**Edge Detection:** Compare simulated probabilities against market-implied probabilities to identify value[cite: 75].
+4.  [cite_start]**Strategy Application:** Select between **Flat Betting**, **Martingale**, or **Confidence-Weighted** approaches[cite: 158].
+5.  [cite_start]**Bankroll Evolution:** Simulate thousands of potential "future paths" for your capital to estimate risk and return[cite: 138, 170].
+6.  [cite_start]**Optimal Allocation:** Receive specific bet-size recommendations ($f^*$) using the **Kelly Criterion**[cite: 140, 161].
 
 ---
 
-## 📊 Evaluation Metrics
-[cite_start]The package evaluates performance using two distinct lenses[cite: 92]:
-* [cite_start]**Statistical Metrics:** Brier Score, Log Loss, and Calibration Curves[cite: 93, 94, 95].
-* [cite_start]**Economic Metrics:** Return on Investment (ROI), Sharpe Ratio, and Maximum Drawdown[cite: 97, 98, 99, 100].
+## 📦 Core Functions
+* [cite_start]`input_odds()`: Interface for entering market-available odds[cite: 176].
+* [cite_start]`convert_prob()`: Advanced de-vigging and probability conversion[cite: 176].
+* [cite_start]`simulate_match()`: High-performance Monte Carlo simulation engine[cite: 177].
+* [cite_start]`apply_strategy()`: Logic for executing various risk-management profiles[cite: 179].
+* [cite_start]`simulate_bankroll()`: Longitudinal tracking of capital growth and drawdown[cite: 180].
+* [cite_start]`kelly_bet()`: Calculation of optimal growth-oriented stake sizes[cite: 182].
+
+---
+
+## 📊 Performance & Risk Metrics
+* [cite_start]**Statistical Intelligence:** Brier Score, Log Loss, and Calibration analysis[cite: 93, 94, 95].
+* [cite_start]**Economic Audit:** Return on Investment (ROI), Sharpe Ratio, and Maximum Drawdown (MDD)[cite: 98, 99, 100].
 
 ---
 
 ## 🛠 Installation
 ```R
-# Internal logic uses these core packages for dimensionality and UI:
+# Core dependencies:
 install.packages(c("umap", "Rtsne", "shiny", "mclust", "implied"))
 
-# To install BetSimR (once hosted):
-# devtools::install_github("yourusername/BetSimR")
+# Install BetSimR:
+# devtools::install_github("nirajmhatre/BetSimR")
