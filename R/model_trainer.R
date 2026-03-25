@@ -1,6 +1,6 @@
 # --- model_trainer.R ---
 
-#' Gradient Descent Optimizer
+#' Gradient Descent Optimizer--------------------------------------------------------------------
 train_model = function(X, Y, learning_rate = 0.0001, iterations = 2000) {
   
   # Remove rows with NAs to prevent matrix multiplication failure
@@ -14,17 +14,17 @@ train_model = function(X, Y, learning_rate = 0.0001, iterations = 2000) {
   n = length(Y)
   
   for (i in 1:iterations) {
-    # 1. Prediction (Linear Combination)
+    # Prediction (Linear Combination)
     predictions = (X %*% weights) + bias
     
-    # 2. Error Calculation
+    # Error Calculation
     errors = predictions - Y
     
-    # 3. Gradient Calculation
+    # Gradient Calculation
     dw = (1/n) * (t(X) %*% errors)
     db = (1/n) * sum(errors)
     
-    # 4. Parameter Update
+    # Parameter Update
     weights = weights - (learning_rate * dw)
     bias = bias - (learning_rate * db)
     
@@ -37,7 +37,7 @@ train_model = function(X, Y, learning_rate = 0.0001, iterations = 2000) {
   return(list(weights = weights, bias = bias))
 }
 
-#' Optimized Prediction
+#' Optimized Prediction-------------------------------------------------------------------
 predict_expected_runs = function(model_params, features) {
   # 'features' must be a vector or matrix matching the training columns
   prediction = (features %*% model_params$weights) + model_params$bias
