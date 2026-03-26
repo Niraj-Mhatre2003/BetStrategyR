@@ -8,7 +8,7 @@ files = list.files(data_path, pattern = "*.json", full.names = TRUE)
 
 # 2. Run Extraction on just 2 files to save time
 cat("Testing extraction on first 2 files...\n")
-test_data = batch_process_json(files[1:2])
+test_data = batch_process_json(files)
 
 # 3. Print Results
 cat("Innings found:", length(test_data), "\n")

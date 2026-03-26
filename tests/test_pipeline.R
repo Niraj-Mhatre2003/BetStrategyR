@@ -7,7 +7,7 @@ cat("--- STARTING FULL PIPELINE TEST ---\n")
 
 # 1. Extraction
 files = list.files("data-raw/T20_data/", pattern = "*.json", full.names = TRUE)
-raw_matches = batch_process_json(files[1:4]) # Use the 4 files you uploaded
+raw_matches = batch_process_json(files) # Use the 4 files you uploaded
 cat("Step 1: Extracted", length(raw_matches), "innings.\n")
 
 # 2. Preparation (Venue Indices & Tensors)

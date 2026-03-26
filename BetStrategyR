@@ -1,0 +1,22 @@
+### PROJECT IDENTIFIER: BetStrategyR (MSc Stats, IIT Kanpur) ###
+----------------------------------------------------------------
+1. DIRECTORY STRUCTURE:
+   - /R: Core functions (data_prep.R, batch_processor.R, model_trainer.R, simulation_engine.R)
+   - /data-raw/T20_data: ~3,100 Cricsheet JSONs (Version 1.0.0)
+   - /data/t20_trained_weights.RData: Contains weights, bias, and scaling parameters.
+
+2. MODEL SPECS:
+   - Algorithm: Manual Gradient Descent (Base R syntax)
+   - Features: [Run_Rate, Wicket_Rate, Venue_Index]
+   - Scaling: Applied Z-score standardization (Stored in t20_model_params)
+   - Assignment Operator: "=" (User preference)
+
+3. PREDICTION LOGIC:
+   - Base Prediction: Y = XW + b
+   - Simulation: Monte Carlo + Poisson Distribution
+   - Advanced: Binomial Wicket Penalty (Adjusts baseline before Poisson sampling)
+
+4. CURRENT MILESTONE:
+   - Prediction/Inference phase COMPLETED.
+   - NEXT STEP: Market Engine & Strategy (Implied Probs, Edge, Kelly Criterion).
+----------------------------------------------------------------
