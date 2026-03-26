@@ -32,3 +32,21 @@ calculate_kelly_stake = function(our_prob, market_odds, bankroll, fraction = 0.5
   suggested_stake = (kelly_f * fraction) * bankroll
   return(suggested_stake)
 }
+
+# --- R/market_engine.R ---
+
+# Logic for Over/Under Betting
+# Returns probability that total runs > threshold
+calculate_over_prob = function(sim_scores_a, sim_scores_b, threshold) {
+  total_scores = sim_scores_a + sim_scores_b
+  prob_over = mean(total_scores > threshold)
+  return(prob_over)
+}
+
+# Logic for Point Spread (Handicap)
+# Returns probability that Team A wins after applying the spread
+calculate_spread_prob = function(sim_scores_a, sim_scores_b, spread_a) {
+  # spread_a is usually negative for favorites (e.g., -5.5)
+  prob_cover = mean((sim_scores_a + spread_a) > sim_scores_b)
+  return(prob_cover)
+}

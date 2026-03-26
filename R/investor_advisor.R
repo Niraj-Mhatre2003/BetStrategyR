@@ -1,30 +1,30 @@
-# --- R/investor_advisor.R ---
-
+#' Strategic Investment Advisor
+#' @export
 invest_advisor = function(team_a_raw, team_b_raw, market_odds_a, bankroll, params, kelly_fraction = 0.5) {
   
-  # 1. Scaling Logic (Using saved training attributes)
-  scale_input = function(vec, params) {
-    return((vec - params$scale_mean) / params$scale_std)
+  # 1. Internal Scaling (Mechanical Necessity)
+  # Uses the mean/std stored within the params object
+  scale_input = function(vec, p) {
+    return((vec - p$scale_mean) / p$scale_std)
   }
   
-  team_a_scaled = scale_input(team_a_raw, params)
-  team_b_scaled = scale_input(team_b_raw, params)
+  # 2. Preparation
+  t_a_scaled = scale_input(team_a_raw, params)
+  t_b_scaled = scale_input(team_b_raw, params)
   
-  # 2. Monte Carlo Simulation
-  our_prob = simulate_match(team_a_scaled, team_b_scaled, params)
+  # 3. Run Simulation (Calling your R/simulation_engine.R)
+  sim_results = simulate_match(t_a_scaled, t_b_scaled, params)
   
-  # 3. Market Comparison
+  # 4. Metrics
+  our_prob = sim_results$win_prob 
   market_prob = 1 / market_odds_a
   edge = our_prob - market_prob
-  
-  # 4. Expected Value (EV) per $1 staked
   ev_pct = ((our_prob * (market_odds_a - 1)) - (1 - our_prob)) * 100
   
-  # 5. Kelly Criterion Stake
+  # 5. Staking (Calling your R/market_engine.R)
   stake = calculate_kelly_stake(our_prob, market_odds_a, bankroll, fraction = kelly_fraction)
-  stake_pct = (stake / bankroll) * 100
   
-  # 6. Analyst Report Output
+  # 6. Professional Report Output
   cat("\n==============================================")
   cat("\n          BETSIMR ANALYTICS REPORT            ")
   cat("\n==============================================")
@@ -34,21 +34,15 @@ invest_advisor = function(team_a_raw, team_b_raw, market_odds_a, bankroll, param
   cat(sprintf("\nModel Win Probability:           %.2f%%", our_prob * 100))
   cat(sprintf("\nMarket Implied Probability:      %.2f%%", market_prob * 100))
   cat("\n----------------------------------------------")
-  cat("\n            RISK & STAKING PROFILE            ")
-  cat("\n----------------------------------------------")
-  cat(sprintf("\nBankroll Allocation:             %.2f%%", stake_pct))
-  cat(sprintf("\nSuggested Amount:                $%.2f", stake))
-  cat(sprintf("\nRisk Multiplier (Kelly):         %.2f", kelly_fraction))
-  cat("\n----------------------------------------------")
+  cat(sprintf("\nSuggested Stake:                 $%.2f", stake))
   
-  # Decision Logic
-  if (edge > 0.01) {
+  if (edge > 0.02) {
     cat("\nFINAL STRATEGY:  [ INVEST ]")
   } else {
     cat("\nFINAL STRATEGY:  [ PASS ]")
-    cat(sprintf("\nREASON:          Edge below 1%% threshold"))
+    cat("\nREASON:          Insufficient Edge")
   }
   cat("\n==============================================\n")
   
-  return(invisible(list(edge = edge, stake_pct = stake_pct, stake = stake)))
+  return(invisible(sim_results))
 }
