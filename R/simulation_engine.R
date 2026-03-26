@@ -4,10 +4,8 @@
 #' @param model_params List containing 'weights' and 'bias' from train_model
 #' @param features Vector [Team_RR, Team_WR, Venue_Index]
 predict_expected_runs = function(model_params, features) {
-  # Convert vector to 1-row matrix to ensure %*% works correctly
+  # Ensure features is a 1-row matrix for the %*% operator
   f_matrix = matrix(features, nrow = 1)
-  
-  # Linear combination: Y = XW + b
   prediction = (f_matrix %*% model_params$weights) + model_params$bias
   return(as.numeric(prediction))
 }
@@ -19,35 +17,32 @@ predict_expected_runs = function(model_params, features) {
 #' @param overs Total overs for the match (default 20)
 #' @param iterations Number of matches to simulate (default 10000)
 simulate_match = function(team1_stats, team2_stats, model_params, overs = 20, iterations = 10000) {
-  
-  # Get Predicted Totals from the trained model
+  # 1. Get the 'Ideal' total from Linear Model
   exp_total1 = predict_expected_runs(model_params, team1_stats)
   exp_total2 = predict_expected_runs(model_params, team2_stats)
   
-  # Convert to ball-by-ball Lambda (Poisson Mean)
-  # Safety: Ensure lambda isn't negative
-  total_balls = overs * 6
-  lambda1 = max(0, exp_total1 / total_balls)
-  lambda2 = max(0, exp_total2 / total_balls)
-  
   team1_wins = 0
   
-  # Monte Carlo Simulation Loop
   for (i in 1:iterations) {
-    # rpois generates random counts based on the predicted average
-    sim_score1 = sum(rpois(total_balls, lambda1))
-    sim_score2 = sum(rpois(total_balls, lambda2))
+    # 2. Simulate Wickets for this specific match (Binomial)
+    # p increases slightly if the team is 'weaker' (lower Win Rate)
+    p1 = 0.3 + (1 - team1_stats[2]) * 0.2 
+    p2 = 0.3 + (1 - team2_stats[2]) * 0.2
     
-    #  Scoring Logic
-    if (sim_score1 > sim_score2) {
-      team1_wins = team1_wins + 1
-    } else if (sim_score1 == sim_score2) {
-      # Handle ties by splitting the win (standard for win probability)
-      team1_wins = team1_wins + 0.5
-    }
+    wickets1 = rbinom(1, 10, p1)
+    wickets2 = rbinom(1, 10, p2)
+    
+    # 3. Apply Penalty: Each wicket reduces the expected total by 5%
+    adj_total1 = exp_total1 * (1 - (wickets1 * 0.05))
+    adj_total2 = exp_total2 * (1 - (wickets2 * 0.05))
+    
+    # 4. Generate Poisson scores based on Adjusted Totals
+    sim_score1 = rpois(1, max(0, adj_total1))
+    sim_score2 = rpois(1, max(0, adj_total2))
+    
+    if (sim_score1 > sim_score2) team1_wins = team1_wins + 1
+    else if (sim_score1 == sim_score2) team1_wins = team1_wins + 0.5
   }
   
-  # Return the probability of Team 1 winning
   return(team1_wins / iterations)
 }
-
