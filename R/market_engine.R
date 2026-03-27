@@ -18,21 +18,19 @@ de_vig_market = function(odds_vector) {
 # The Kelly Criterion formula for optimal stake
 # f* = (bp - q) / b
 calculate_kelly_stake = function(our_prob, market_odds, bankroll, fraction = 0.5) {
+  # Standard Kelly: f* = (bp - q) / b
   b = market_odds - 1
   p = our_prob
   q = 1 - p
   
-  # Basic Kelly Fraction
   kelly_f = (b * p - q) / b
   
-  # Safety Guard: If edge is negative, stake is 0
-  if (kelly_f <= 0) return(0)
+  # If no edge or error, bet $0
+  if (is.na(kelly_f) || kelly_f <= 0) return(0)
   
-  # Apply Fractional Kelly (risk management)
-  suggested_stake = (kelly_f * fraction) * bankroll
-  return(suggested_stake)
+  # Return the dollar amount to bet
+  return((kelly_f * fraction) * bankroll)
 }
-
 # --- R/market_engine.R ---
 
 # Logic for Over/Under Betting
