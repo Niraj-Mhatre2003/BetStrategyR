@@ -1,5 +1,15 @@
 # --- R/simulation_engine.R ---
-
+#' Simulate T20 Cricket Match
+#' 
+#' Performs a Monte Carlo simulation of a T20 match between two teams based on 
+#' Poisson-distributed run scoring and Binomial-distributed wicket events.
+#' @param team1_stats Numeric vector of scaled stats for Team 1 (RR, WR, VenueIdx).
+#' @param team2_stats Numeric vector of scaled stats for Team 2 (RR, WR, VenueIdx).
+#' @param model_params A list containing the 'intercept' and 'weights' from the trained model.
+#' @param overs Number of overs per innings (default 20).
+#' @param iterations Number of simulation trials (default 10,000 for stability).
+#' @return A list containing the win probability for Team 1 and vectors of all simulated scores.
+#' @export
 simulate_match = function(team1_stats, team2_stats, model_params, overs = 20, iterations = 10000) {
   
   exp_total1 = predict_expected_runs(model_params, team1_stats)
@@ -10,7 +20,7 @@ simulate_match = function(team1_stats, team2_stats, model_params, overs = 20, it
   team1_wins = 0
   
   for (i in 1:iterations) {
-    # SAFETY FIX: Clamp probabilities between 0.01 and 0.99
+    # SAFETY FIX: probabilities between 0.01 and 0.99
     # This prevents rbinom from producing NAs when stats are extreme
     raw_p1 = 0.3 + (1 - team1_stats[2]) * 0.2 
     raw_p2 = 0.3 + (1 - team2_stats[2]) * 0.2
@@ -33,7 +43,7 @@ simulate_match = function(team1_stats, team2_stats, model_params, overs = 20, it
     scores_a[i] = sim_score1
     scores_b[i] = sim_score2
     
-    # 5. Comparison (Safe from NAs now)
+    # 5. Comparison 
     if (sim_score1 > sim_score2) {
       team1_wins = team1_wins + 1
     } else if (sim_score1 == sim_score2) {

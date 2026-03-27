@@ -1,6 +1,13 @@
 # --- R/batch_processor.R ---
 library(jsonlite)
-
+#' Batch Process Cricket JSON Data
+#' Parses nested JSON match files (standard ball-by-ball format) into structured 
+#' match objects containing Run Rate, Wicket Rate, and Venue information.
+#' 
+#' @param file_path String path to the JSON file.
+#' @return A list of standardized match objects for each innings.
+#' @importFrom jsonlite fromJSON
+#' @export
 batch_process_json = function(file_path) {
   # simplifyVector = FALSE is CRITICAL for this nested structure
   data = fromJSON(file_path, simplifyVector = FALSE)

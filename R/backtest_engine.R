@@ -1,5 +1,19 @@
 # --- R/backtest_engine.R ---
+# --- R/backtest_engine.R ---
 
+#' Simulate Bankroll Performance (Backtesting)
+#' 
+#' Runs a historical simulation of a betting strategy over a dataset of matches 
+#' to evaluate profitability and risk, including stop-loss triggers.
+#' 
+#' @param match_data A list of match objects including scaled stats and actual winners.
+#' @param params A list containing the trained model parameters.
+#' @param initial_bankroll The starting balance in dollars (Default 1000).
+#' @param strategy_method The staking method to use: "kelly", "flat" (Default "kelly").
+#' @param bet_type The market type: "moneyline", "over_under", etc.
+#' @param stop_loss_pct The percentage of the bankroll lost before stopping (Default 0.50).
+#' @return A numeric vector representing the bankroll history over time.
+#' @export
 simulate_bankroll = function(match_data, params, initial_bankroll = 1000, 
                              strategy_method = "kelly", bet_type = "moneyline",
                              stop_loss_pct = 0.50) { # 0.50 means stop at 50% loss

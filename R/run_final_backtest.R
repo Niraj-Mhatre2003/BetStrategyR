@@ -2,20 +2,16 @@
 # BETSIMR STANDALONE BACKTEST SUITE
 # =============================================================
 
-# --- FIXED SOURCE BLOCK ---
-files_to_source = c("R/data_prep.R", "R/batch_processor.R", 
-                    "R/simulation_engine.R", "R/market_engine.R", 
-                    "R/model_trainer.R", "R/backtest_engine.R","R/strategy_logic.R")
-
-for (f in files_to_source) {
-  if (file.exists(f) && file.info(f)$size > 0) {
-    source(f)
-    cat("Successfully sourced:", f, "\n")
-  } else {
-    warning(paste("Skipping empty or missing file:", f))
-  }
+# --- PROFESSIONAL LOADING BLOCK ---
+if ("BetSimR" %in% installed.packages()) {
+  library(BetSimR) # Use the installed package if ready
+} else {
+  # Fallback to sourcing for local development
+  files_to_source = c("R/data_prep.R", "R/batch_processor.R", 
+                      "R/simulation_engine.R", "R/market_engine.R", 
+                      "R/model_trainer.R", "R/backtest_engine.R","R/strategy_logic.R")
+  for (f in files_to_source) source(f)
 }
-
 # 2. LOAD PRETRAINED MODEL & METADATA
 # Adjusting path to where your file sits (root directory)
 if (!file.exists("pretrained_bet_model.rds")) {
@@ -68,7 +64,7 @@ final_history = simulate_bankroll(processed_matches, params,
                                   stop_loss_pct = STOP_LOSS)
 
 # Update the plot to show the Stop-Loss line
-plot(final_history, type = "l", col = "blue", lwd = 2,
+plot(final_history, type = "l", col = "blue",log = "y", lwd = 2,
      main = paste("Backtest:", toupper(MY_STRATEGY), "Strategy"),
      xlab = "Match Number", ylab = "Bankroll ($)")
 abline(h = 1000 * (1 - STOP_LOSS), col = "orange", lty = 3, lwd = 2) # Stop-Loss Line

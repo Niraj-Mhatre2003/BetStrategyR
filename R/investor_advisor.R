@@ -1,4 +1,15 @@
 #' Strategic Investment Advisor
+#' 
+#' Generates a comprehensive betting analytics report by combining match 
+#' simulations with market odds and bankroll management.
+#' 
+#' @param team_a_raw Numeric vector of unscaled stats for Team A.
+#' @param team_b_raw Numeric vector of unscaled stats for Team B.
+#' @param market_odds_a The decimal odds offered for Team A to win.
+#' @param bankroll Total betting capital available.
+#' @param params A list containing the trained model (weights, bias) and scaling factors (mean, std).
+#' @param kelly_fraction The risk multiplier (default 0.5 for Half-Kelly).
+#' @return Invisibly returns the full simulation results list.
 #' @export
 invest_advisor = function(team_a_raw, team_b_raw, market_odds_a, bankroll, params, kelly_fraction = 0.5) {
   

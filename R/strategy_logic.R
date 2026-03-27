@@ -1,13 +1,19 @@
 # --- R/strategy_logic.R ---
 
 #' Core Strategy Selector
-#' @param our_sim The result list from simulate_match()
-#' @param market_odds The decimal odds provided by the bookmaker
-#' @param bankroll Current total funds
-#' @param type "moneyline", "over_under", or "spread"
-#' @param method "flat", "kelly", or "martingale"
-# --- R/strategy_logic.R ---
-
+#' 
+#' Evaluates different wagering strategies (Kelly Criterion, Flat Betting) 
+#' based on simulation results and market conditions.
+#' 
+#' @param our_sim The result list returned from simulate_match().
+#' @param market_odds The decimal odds provided by the bookmaker.
+#' @param bankroll Current total funds available for wagering.
+#' @param type Betting market type: "moneyline", "over_under", or "spread" (Default "moneyline").
+#' @param method Staking method: "flat", "kelly", or "martingale" (Default "kelly").
+#' @param last_outcome Result of the previous bet, used for progression strategies (Default "win").
+#' @param prev_stake The amount wagered in the previous round (Default 10).
+#' @return A list containing the calculated win probability and the recommended stake.
+#' @export
 apply_betting_strategy = function(our_sim, market_odds, bankroll, 
                                   type = "moneyline", 
                                   method = "kelly", 
@@ -19,7 +25,7 @@ apply_betting_strategy = function(our_sim, market_odds, bankroll,
   
   # 2. Calculate Stake
   if (method == "kelly") {
-    # We call the function using the exact name 'our_prob'
+    # Ensure this function exists in your market_engine.R
     stake = calculate_kelly_stake(our_prob = our_prob, 
                                   market_odds = market_odds, 
                                   bankroll = bankroll, 
