@@ -1,1 +1,0 @@
-source('C:/Program Files/RStudio/resources/app/R/Tools.R');source('C:/Program Files/RStudio/resources/app/R/modules/SessionCodeTools.R');source('C:/Program Files/RStudio/resources/app/R/modules/SessionRCompletions.R');.rs.getPackageInformation('jsonlite');
