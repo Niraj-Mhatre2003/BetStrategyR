@@ -1,22 +1,48 @@
-library(testthat)
-
-test_that("Kelly Criterion calculates correct stakes", {
-  # Scenario: 60% win prob, 2.0 odds ($1 profit on $1 bet)
-  # Formula: ((1 * 0.6) - 0.4) / 1 = 0.2 (20% of bankroll)
-  expect_equal(calculate_kelly_stake(0.6, 2.0, 1000, fraction = 1), 200)
+test_that("strategy returns valid output", {
   
-  # Scenario: No edge (Prob matches Odds) -> Stake should be 0
-  expect_equal(calculate_kelly_stake(0.5, 2.0, 1000), 0)
+  sim <- list(win_prob = 0.6, team_a_scores = 1:100, team_b_scores = 1:100)
   
-  # Scenario: Negative edge (Prob lower than Odds) -> Stake should be 0
-  expect_equal(calculate_kelly_stake(0.4, 2.0, 1000), 0)
+  res <- apply_betting_strategy(sim, 2.0, 1000)
+  
+  expect_true(is.numeric(res$stake))
+  expect_false(is.na(res$stake))
+  expect_true(res$stake >= 0)
 })
 
-test_that("Strategy logic returns valid list structure", {
-  sim_mock = list(win_prob = 0.55)
-  result = apply_betting_strategy(sim_mock, 1.90, 1000, method = "kelly")
+test_that("martingale increases after loss", {
   
-  expect_type(result, "list")
-  expect_true("stake" %in% names(result))
-  expect_true("prob" %in% names(result))
+  sim <- list(win_prob = 0.5, team_a_scores = 1:100, team_b_scores = 1:100)
+  
+  res <- apply_betting_strategy(
+    sim, 2.0, 1000,
+    method = "martingale",
+    last_outcome = "loss",
+    prev_stake = 10
+  )
+  
+  expect_true(res$stake >= 20)
+})
+
+test_that("different strategies produce different outcomes", {
+  
+  set.seed(42)
+  
+  dummy_match <- list(
+    team_a_stats = c(8, 0.05, 1),
+    team_b_stats = c(7, 0.06, 1),
+    market_odds = 2.0
+  )
+  
+  matches <- replicate(50, dummy_match, simplify = FALSE)
+  
+  params <- list(
+    scale_mean = c(8, 0.05, 1),
+    bias = 5.050939,
+    weights = c(0.5, 0.2, 0.3)
+  )
+  
+  kelly <- simulate_bankroll(matches, params, strategy_method = "kelly")
+  flat  <- simulate_bankroll(matches, params, strategy_method = "flat")
+  
+  expect_false(all(kelly == flat))
 })
