@@ -1,13 +1,47 @@
 # --- R/batch_processor.R ---
-library(jsonlite)
 #' Batch Process Cricket JSON Data
-#' Parses nested JSON match files (standard ball-by-ball format) into structured 
-#' match objects containing Run Rate, Wicket Rate, and Venue information.
-#' 
-#' @param file_path String path to the JSON file.
-#' @return A list of standardized match objects for each innings.
+#'
+#' @description
+#' Parses ball-by-ball cricket match data in JSON format and converts it into
+#' structured match objects containing aggregate statistics such as total runs,
+#' run rate, and wicket rate.
+#'
+#' @usage
+#' batch_process_json(file_path)
+#'
+#' @param file_path Character. Path to the JSON file.
+#'
+#' @return
+#' A list of match objects (one per innings), each containing:
+#' \itemize{
+#'   \item Team name
+#'   \item Runs, balls, wickets
+#'   \item Derived features (run rate, wicket rate)
+#'   \item Venue information
+#' }
+#'
+#' @details
+#' The function traverses nested match data:
+#' \itemize{
+#'   \item Innings → Overs → Deliveries
+#' }
+#'
+#' For each innings, it computes:
+#' \itemize{
+#'   \item Total runs scored
+#'   \item Total balls faced
+#'   \item Total wickets lost
+#' }
+#'
+#' These aggregates are then transformed into standardized match objects using
+#' \code{\link{create_match_object}}, which includes derived features such as:
+#' \itemize{
+#'   \item Run rate (runs per over)
+#'   \item Wicket rate (wickets per ball)
+#' }
+#'
 #' @importFrom jsonlite fromJSON
-#' @export
+#' @keywords internal
 batch_process_json = function(file_path) {
   # simplifyVector = FALSE is CRITICAL for this nested structure
   data = fromJSON(file_path, simplifyVector = FALSE)
