@@ -1,4 +1,4 @@
-# --- model_trainer.R ---
+# --- R/model_trainer.R ---
 
 #' Gradient Descent Optimizer--------------------------------------------------------------------
 #' Gradient Descent Optimizer for Cricket Run Prediction
@@ -11,7 +11,9 @@
 #' @param Y Vector of actual runs scored.
 #' @param learning_rate Speed of convergence (default 0.0001).
 #' @param iterations Number of gradient steps (default 2000).
+#' @importFrom stats runif complete.cases
 #' @return A list containing the optimized weights and bias.
+#' @keywords internal
 train_model = function(X, Y, learning_rate = 0.0001, iterations = 2000) {
   
   # Remove rows with NAs to prevent matrix multiplication failure
@@ -41,7 +43,7 @@ train_model = function(X, Y, learning_rate = 0.0001, iterations = 2000) {
     
     if (i %% 500 == 0) {
       mse = mean(errors^2)
-      cat("Step:", i, " - MSE:", mse, "\n")
+      message("Step:", i, " - MSE:", mse, "\n")
     }
   }
   
@@ -54,18 +56,19 @@ train_model = function(X, Y, learning_rate = 0.0001, iterations = 2000) {
 #' Internal helper that performs matrix multiplication to predict runs 
 #' based on team features and model parameters.
 #' 
-#' @param model_params List containing weights and bias.
+#' @param params List containing weights and bias.
 #' @param features Numeric vector of team stats.
 #' @return A numeric value representing predicted runs.
-predict_expected_runs = function(model_params, features) {
+#' @keywords internal
+predict_expected_runs = function(params, features) {
   # Force input to 1-row matrix (1x3)
   x = matrix(as.numeric(features), nrow = 1)
-  
+
   # Force weights to column matrix (3x1)
-  w = as.matrix(model_params$weights)
+  w = as.matrix(params$scale_mean, ncol = 1)
   
   # (1x3) %*% (3x1) + scalar
-  prediction = (x %*% w) + (model_params$bias %||% 0)
+  prediction = (x %*% w) + (params$bias %||% 0)
   
   return(as.numeric(prediction))
 }
