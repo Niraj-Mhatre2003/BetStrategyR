@@ -92,18 +92,12 @@ The package implements a sophisticated statistical pipeline optimized for cricke
 The framework provides comprehensive evaluation across:
 
 * **Statistical Validation:** Accuracy, Brier Score, Log Loss, calibration analysis.
-* **Financial Performance:** ROI, Net Profit/Loss, Win Rate, Average Odds.
-* **Risk Metrics:** Sharpe Ratio, Maximum Drawdown, Consecutive Losses, Survival Probability.
+* **Financial Performance:**  Net Profit/Loss, Win Rate, Average Odds.
+* **Risk Metrics:** Maximum Drawdown, Consecutive Losses, Survival Probability.
 
 ---
 
 ## 🛠 Installation
-
-### Prerequisites
-```R
-# Install core dependencies:
-install.packages(c("umap", "Rtsne", "shiny", "mclust", "implied"))
-```
 
 ### Install BetStrategyR
 ```R
@@ -498,9 +492,7 @@ Example:
 | **Win Probability** | Chance your prediction is correct | Higher is better (>55% is good) |
 | **Recommended Stake** | Amount to wager (Kelly method) | Conservative sizing to minimize ruin risk |
 | **Final Bankroll** | Ending balance after sequence | Compare to starting $1,000 |
-| **ROI** | Return on Investment (%) | (Final - Initial) / Initial × 100 |
 | **Survival Probability** | % of Monte Carlo paths that profit | Higher is better (>85% is excellent) |
-| **Max Drawdown** | Largest peak-to-trough decline | How much you might lose before recovery |
 
 ---
 
@@ -534,7 +526,7 @@ Example:
 
 For questions, issues, bug reports, or feature requests:
 1. Open an issue on GitHub
-2. Contact the author directly
+2. Contact the author directly at nirajstats@gmail.com
 
 ---
 
